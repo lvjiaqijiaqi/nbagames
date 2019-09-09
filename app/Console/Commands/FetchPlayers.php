@@ -8,6 +8,7 @@ use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
 use App\Models\Team;
 use App\Models\Player;
+use App\Models\Enum\PlayerPositionEnum;
 
 class FetchPlayers extends Command
 {
@@ -42,9 +43,9 @@ class FetchPlayers extends Command
      */
     public function handle()
     {
-        $teams = Qteam::all();
+        $teams = Team::all();
         foreach ($teams as $team) {
-            $this->fetchPlyers($team->team_id);
+            $this->fetchPlyers($team->tid);
         }
     }
 
@@ -61,12 +62,14 @@ class FetchPlayers extends Command
             $player['en_name'] = $value['enName'];
             $player['team_id'] = $value['teamId'];
             $player['position'] = $value['position'];
+            $player['position_type'] = PlayerPositionEnum::getPlayerPosition($value['position']);
             $player['birth'] = $value['birth'];
             $player['height'] = $value['height'];
             $player['weight'] = $value['weight'];
             $player['icon'] = $value['icon'];
             $player['wage'] = $value['wage'];
-            Qplayer::updateOrCreate(array('player_id' => $player['player_id']),$player);
+            Player::updateOrCreate(array('player_id' => $player['player_id']),$player);
         }
-    } 
+    }
+
 }
