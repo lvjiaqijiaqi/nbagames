@@ -68,6 +68,7 @@ class FetchPlayers extends Command
             $player['weight'] = $value['weight'];
             $player['icon'] = $value['icon'];
             $player['wage'] = $value['wage'];
+            echo $value['id']."\n";
             Player::updateOrCreate(array('player_id' => $player['player_id']),$player);
         }
     }

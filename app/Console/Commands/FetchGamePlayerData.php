@@ -51,7 +51,11 @@ class FetchGamePlayerData extends Command
         if (!isset($game)) {
             $this->initGame($date);
         }else{
-            $this->updateGame($game);
+            //$this->updateGame($game);
+            $avg = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->avg(['PTS','REB']);
+            print_r($avg);
         } 
     }
 
@@ -62,6 +66,39 @@ class FetchGamePlayerData extends Command
             $this->initPlayers($match->left_id , $match->game_id);
             $this->initPlayers($match->right_id , $match->game_id);
         }
+        $maxPTS = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->max('PTS');
+        $maxREB = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->max('REB');
+        $maxAST = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->max('AST');
+        $maxSTL = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->max('STL');
+        $maxBLK = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->max('BLK');
+        $maxTO = DB::table('game_player_data')
+                ->where('game_id', $game->id)
+                ->max('TO');  
+        $game->PTS = $maxPTS;
+        $game->AST = $maxREB;
+        $game->REB = $maxAST;
+        $game->STL = $maxSTL;
+        $game->BLK = $maxBLK;
+        $game->TO = $maxTO;
+        $game->save();
+        /*$gameMax = ['PTS' => $maxPTS,
+                    'REB' => $maxREB,
+                    'AST' => $maxAST,
+                    'STL' => $maxSTL,
+                    'BLK' => $maxBLK,
+                    'TO' => $maxTO,
+                    ];
+        print_r($gameMax);*/
     }
 
     public function initPlayers($teamId , $gameId){
