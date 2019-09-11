@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\GamePlayerData;
 use App\Models\Room;
+use App\Models\Play;
 
 class Game extends Model
 {
     protected $fillable = ['game_date','match_num','status','PTS','REB','AST','STL','BLK','TO'];
     public $gamePlayers;
+    public $play;
+    public $room;
     public function checkValid($players , Room $room){
     	$validTotal =  $this->PTS * $room->PTS +
     					$this->REB * $room->REB +

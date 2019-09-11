@@ -30,6 +30,7 @@ $api->version('v1', [
         $api->group(['middleware' => 'api.auth'], function($api) {
             $api->get('games', 'GamesController@index')->name('api.games.index');
             $api->post('games/{game}/play', 'PlaysController@store')->name('api.games.plays.store');
+            $api->get('games/{game}/plays', 'PlaysController@index')->name('api.games.plays.index');
         });
     });
 });

@@ -13,6 +13,12 @@ use App\Transformers\GamePlayerDataTransformer;
 
 class PlaysController extends Controller
 {
+
+	public function index($gameId){
+		$game = Game::where('id', $gameId)->first();
+		
+	}
+
     public function store(PlayRequest $request, $gameId){
     	$game = Game::where('id', $gameId)->first();
     	if($game->game_status == 0){
