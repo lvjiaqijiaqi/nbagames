@@ -6,12 +6,14 @@ use App\Models\Game;
 use League\Fractal\TransformerAbstract;
 use App\Transformers\GamePlayerDataTransformer;
 use App\Transformers\PlayTransformer;
+use App\Transformers\RoomTransformer;
+use App\Models\Room;
 
 class GameTransformer extends TransformerAbstract
 {
 
     protected $defaultIncludes = [
-        'gamePlayers' , 'play'
+        'gamePlayers' , 'play' , 'room'
     ];
 
     public function transform(Game $game)
@@ -31,5 +33,16 @@ class GameTransformer extends TransformerAbstract
 
     public function includePlay(Game $game){
         return $this->item($game->play, new PlayTransformer());
+    }
+
+    public function includeRoom(Game $game){
+        $validTotal =  $game->PTS * $game->room->PTS +
+                        $game->REB * $game->room->REB +
+                        $game->AST * $game->room->AST +
+                        $game->STL * $game->room->STL +
+                        $game->BLK * $game->room->BLK +
+                        $game->TO * $game->room->TO;
+        $game->room->total = $validTotal;               
+        return $this->item($game->room, new RoomTransformer());
     }
 }
