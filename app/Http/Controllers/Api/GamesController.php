@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Game;
 use App\Models\GamePlayerData;
 use App\Transformers\GameTransformer;
-use App\Transformers\RoomTransformer;
 use App\Models\Play;
 use App\Models\Room;
 use Auth;
