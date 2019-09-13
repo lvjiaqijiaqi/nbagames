@@ -25,6 +25,8 @@ $api->version('v1', [
         ->name('api.socials.authorizations.store');  
     $api->post('authorizations', 'AuthorizationsController@store')
         ->name('api.authorizations.store');  
+    $api->post('weapp/authorizations', 'AuthorizationsController@weappStore')
+            ->name('api.weapp.authorizations.store');
     $api->group([
         'middleware' => 'api.throttle',
         'limit' => config('api.rate_limits.access.limit'),
