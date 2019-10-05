@@ -17,6 +17,8 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api'
 ], function($api) {
+    $api->get('test', 'TestController@index')
+        ->name('api.test.index');
     $api->put('authorizations/current', 'AuthorizationsController@update')
         ->name('api.authorizations.update');
     $api->delete('authorizations/current', 'AuthorizationsController@destroy')

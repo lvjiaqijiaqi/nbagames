@@ -14,12 +14,12 @@ class PlayRequest extends FormRequest
     public function rules()
     {
         return [
-            'game_id' => 'required|string',
-            'C' => 'required|string',
-            'PF' => 'required|string',
-            'SF' => 'required|string',
-            'SG' => 'required|string',
-            'PG' => 'required|string'
+            'game_id' => 'required',
+            'C' => 'required',
+            'PF' => 'required',
+            'SF' => 'required',
+            'SG' => 'required',
+            'PG' => 'required'
         ];
     }
 }

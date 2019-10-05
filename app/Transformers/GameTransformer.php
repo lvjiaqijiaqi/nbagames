@@ -32,7 +32,9 @@ class GameTransformer extends TransformerAbstract
     }
 
     public function includePlay(Game $game){
-        return $this->item($game->play, new PlayTransformer());
+        if ($game->play) {
+            return $this->item($game->play, new PlayTransformer());
+        }
     }
 
     public function includeRoom(Game $game){

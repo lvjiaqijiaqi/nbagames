@@ -12,6 +12,7 @@ class GamePlayerDataTransformer extends TransformerAbstract
         return [
             'player_id' => $gamePlayerData->player_id,
             'player_name' => $gamePlayerData->player_cn_name,
+            'avatar' => $gamePlayerData->avatar,
             'position_type' => $gamePlayerData->position_type,
             'PTS' => $gamePlayerData->PTS,
             'REB' => $gamePlayerData->REB,

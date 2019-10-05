@@ -63,7 +63,7 @@ class PlaysController extends Controller
 	    							'user_id' => $this->user()->id,
 	    							'room_id' => $room->id,
 	    							'C' => $C_player->player_id , 
-	    						    'PF' => $PF_player->player_id,
+	    						  'PF' => $PF_player->player_id,
 	    							'SF' => $SF_player->player_id,
 	    							'SG' => $SG_player->player_id,
 	    							'PG' => $PG_player->player_id);

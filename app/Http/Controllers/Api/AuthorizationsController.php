@@ -38,20 +38,13 @@ class AuthorizationsController extends Controller
 
             $username = $request->username;
 
-            // 用户名可以是邮箱或电话
-            filter_var($username, FILTER_VALIDATE_EMAIL) ?
-                $credentials['email'] = $username :
-                $credentials['phone'] = $username;
+            $user = User::create([
+                        'name' => $request->username,
+                        'avatar' => '',
+                        'weixin_openid' => $data['openid'],
+                        'email' => $data['openid'],
+                    ]);
 
-            $credentials['password'] = '00000000';
-
-            // 验证用户名和密码是否正确
-            if (!Auth::guard('api')->once($credentials)) {
-                return $this->response->errorUnauthorized('用户名或密码错误');
-            }
-
-            // 获取对应的用户
-            $user = Auth::guard('api')->getUser();
             $attributes['weapp_openid'] = $data['openid'];
         }
 

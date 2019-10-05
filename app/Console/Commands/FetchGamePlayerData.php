@@ -119,6 +119,7 @@ class FetchGamePlayerData extends Command
                 $gamePlayer['player_cn_name'] = $player->cn_name;
                 $gamePlayer['game_id'] = $gameId;
                 $gamePlayer['position_type'] = $player->position_type;
+                $gamePlayer['avatar'] = $player->icon;
                 $gamePlayers[] = $gamePlayer;
             }else{
                 $gamePlayer = array();
@@ -129,6 +130,7 @@ class FetchGamePlayerData extends Command
                 $gamePlayer['STL'] = 0;
                 $gamePlayer['BLK'] = 0;
                 $gamePlayer['TO'] = 0;
+                $gamePlayer['avatar'] = '';
                 $gamePlayer['player_cn_name'] = $player->cn_name;
                 $gamePlayer['game_id'] = $gameId;
                 $gamePlayer['position_type'] = $player->position_type;
