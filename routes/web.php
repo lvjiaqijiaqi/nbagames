@@ -13,3 +13,7 @@
 
 Route::get('/', 'App\AppController@getApp');
 Route::get('/','HelloController@index');
+
+Route::any('{all}', function(){
+  return view('app');
+});
