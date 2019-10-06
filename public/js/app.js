@@ -3362,15 +3362,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      game: {},
+      room: {},
+      status: {},
       tableData: [{
         date: '2016-05-02',
         name: '王小虎',
@@ -3391,41 +3389,81 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   created: function created() {
-    console.log(1);
-    this.getList();
+    localStorage.setItem('access_token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uYmFnYW1lcy50ZXN0IiwiaWF0IjoxNTcwMzc3NTg5LCJleHAiOjE2MDE5MTM1ODksIm5iZiI6MTU3MDM3NzU4OSwianRpIjoiNmVrYjd6NUNIbDV6MGQ1RCIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.xgRM1d5frxTctSMXugcpcY3xarTBlx_5WnqECNC9qfA');
+    this.getGame();
   },
   methods: {
-    getList: function () {
-      var _getList = _asyncToGenerator(
+    getGame: function () {
+      var _getGame = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var res;
+        var topicsResponse;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return _api_js__WEBPACK_IMPORTED_MODULE_1__["default"].request('test');
+                return _api_js__WEBPACK_IMPORTED_MODULE_1__["default"].authRequest('games');
 
               case 3:
-                res = _context.sent;
-                console.log(res);
-                _context.next = 11;
+                topicsResponse = _context.sent;
+                console.log(topicsResponse);
+                this.game = topicsResponse.data.data;
+                this.room = this.game.room.data;
+                this.status = this.game.status;
+                _context.next = 12;
                 break;
 
-              case 7:
-                _context.prev = 7;
+              case 10:
+                _context.prev = 10;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
-                alert('请求出错');
 
-              case 11:
+              case 12:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7]]);
+        }, _callee, this, [[0, 10]]);
+      }));
+
+      function getGame() {
+        return _getGame.apply(this, arguments);
+      }
+
+      return getGame;
+    }(),
+    getList: function () {
+      var _getList = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var res;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return _api_js__WEBPACK_IMPORTED_MODULE_1__["default"].request('test');
+
+              case 3:
+                res = _context2.sent;
+                console.log(res);
+                _context2.next = 11;
+                break;
+
+              case 7:
+                _context2.prev = 7;
+                _context2.t0 = _context2["catch"](0);
+                console.log(_context2.t0);
+                alert('请求出错');
+
+              case 11:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[0, 7]]);
       }));
 
       function getList() {
@@ -92280,14 +92318,23 @@ var render = function() {
     { staticStyle: { width: "100%" }, attrs: { data: _vm.tableData } },
     [
       _c("el-table-column", {
-        attrs: { prop: "date", label: "日期", width: "180" }
+        attrs: { label: "头像", width: "100" },
+        scopedSlots: _vm._u([
+          {
+            key: "default",
+            fn: function(scope) {
+              return [
+                _c("img", {
+                  staticClass: "head_pic",
+                  attrs: { src: scope.row.img, width: "40", height: "40" }
+                })
+              ]
+            }
+          }
+        ])
       }),
       _vm._v(" "),
-      _c("el-table-column", {
-        attrs: { prop: "name", label: "姓名", width: "180" }
-      }),
-      _vm._v(" "),
-      _c("el-table-column", { attrs: { prop: "address", label: "地址" } })
+      _c("el-table-column", { attrs: { prop: "date", label: "日期" } })
     ],
     1
   )
@@ -107357,21 +107404,28 @@ var request =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(url, options) {
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(options) {
     var instance, response;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            instance = axios__WEBPACK_IMPORTED_MODULE_1___default.a.create(options);
-            _context.next = 3;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(host + '/' + url);
+            if (typeof options === 'string') {
+              options = {
+                url: options
+              };
+            }
 
-          case 3:
+            options.url = host + '/' + options.url;
+            instance = axios__WEBPACK_IMPORTED_MODULE_1___default.a.create(options);
+            _context.next = 5;
+            return instance.request();
+
+          case 5:
             response = _context.sent;
             return _context.abrupt("return", response);
 
-          case 5:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -107379,7 +107433,7 @@ function () {
     }, _callee);
   }));
 
-  return function request(_x, _x2) {
+  return function request(_x) {
     return _ref.apply(this, arguments);
   };
 }(); // 带身份认证的请求
@@ -107390,23 +107444,30 @@ var authRequest =
 function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
-  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(url, options) {
-    var accessToken, header;
+  _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(options) {
+    var accessToken, headers;
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            if (typeof options === 'string') {
+              options = {
+                url: options
+              };
+            }
+
+            _context2.next = 3;
             return getToken();
 
-          case 2:
+          case 3:
             accessToken = _context2.sent;
-            header = options.header || {};
-            header.Authorization = 'Bearer ' + accessToken;
-            options.header = header;
-            return _context2.abrupt("return", request(url, options));
+            console.log(accessToken);
+            headers = options.headers || {};
+            headers.Authorization = 'Bearer ' + accessToken;
+            options.headers = headers;
+            return _context2.abrupt("return", request(options));
 
-          case 7:
+          case 9:
           case "end":
             return _context2.stop();
         }
@@ -107414,7 +107475,7 @@ function () {
     }, _callee2);
   }));
 
-  return function authRequest(_x3, _x4) {
+  return function authRequest(_x2) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -107434,17 +107495,18 @@ function () {
             options = {
               url: host + '/' + 'authorizations/current',
               method: 'PUT',
-              header: {
+              headers: {
                 'Authorization': 'Bearer ' + accessToken
               }
             };
             _context3.next = 3;
-            return request(host + '/' + 'authorizations/current', options);
+            return request(options);
 
           case 3:
             refreshResponse = _context3.sent;
+            console.log(refreshResponse); // 刷新成功状态码为 200
 
-            if (refreshResponse.statusCode === 200) {
+            if (refreshResponse.status === 200) {
               // 将 Token 及过期时间保存在 storage 中
               localStorage.setItem('access_token', refreshResponse.data.access_token);
               localStorage.setItem('access_token_expired_at', new Date().getTime() + refreshResponse.data.expires_in * 1000);
@@ -107452,7 +107514,7 @@ function () {
 
             return _context3.abrupt("return", refreshResponse);
 
-          case 6:
+          case 7:
           case "end":
             return _context3.stop();
         }
@@ -107460,7 +107522,7 @@ function () {
     }, _callee3);
   }));
 
-  return function refreshToken(_x5) {
+  return function refreshToken(_x3) {
     return _ref3.apply(this, arguments);
   };
 }(); // 获取 Token
@@ -107523,7 +107585,7 @@ function () {
     }, _callee4);
   }));
 
-  return function getToken(_x6) {
+  return function getToken(_x4) {
     return _ref4.apply(this, arguments);
   };
 }();

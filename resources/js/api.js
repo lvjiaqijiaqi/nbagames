@@ -4,19 +4,31 @@ const host = 'http://nbagames.test/api'
 
 
 // 普通请求
-const request = async (url , options) => {
+const request = async (options) => {
+  if (typeof options === 'string') {
+    options = {
+      url: options
+    }
+  }
+  options.url = host + '/' + options.url
   const instance = axios.create(options);
-  let response = await axios.get(host + '/' + url)
+  let response = await instance.request()
   return response
 }
 
 // 带身份认证的请求
-const authRequest = async (url , options) => {
+const authRequest = async (options) => {
+  if (typeof options === 'string') {
+    options = {
+      url: options
+    }
+  }
   let accessToken = await getToken()
-  let header = options.header || {}
-  header.Authorization = 'Bearer ' + accessToken
-  options.header = header
-  return request(url, options)
+  console.log(accessToken)
+  let headers = options.headers || {}
+  headers.Authorization = 'Bearer ' + accessToken
+  options.headers = headers
+  return request(options)
 }
 
 const refreshToken = async (accessToken) => {
@@ -24,14 +36,14 @@ const refreshToken = async (accessToken) => {
   let options = {
     url: host + '/' + 'authorizations/current',
     method: 'PUT',
-    header: {
+    headers: {
       'Authorization': 'Bearer ' + accessToken
     }
   };
-  let refreshResponse = await request(host + '/' + 'authorizations/current' , options)
-
+  let refreshResponse = await request(options)
+  console.log(refreshResponse)
   // 刷新成功状态码为 200
-  if (refreshResponse.statusCode === 200) {
+  if (refreshResponse.status === 200) {
     // 将 Token 及过期时间保存在 storage 中
     localStorage.setItem('access_token', refreshResponse.data.access_token)
     localStorage.setItem('access_token_expired_at', new Date().getTime() + refreshResponse.data.expires_in * 1000)
