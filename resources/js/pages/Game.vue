@@ -2,14 +2,15 @@
     <el-table
       :data="tableData"
       style="width: 100%">
-      <el-table-column label="头像" width="100">
+      <el-table-column  width="100">
     　　<template slot-scope="scope">
     　　　　<img :src="scope.row.img" width="40" height="40" class="head_pic"/>
     　　</template>
       </el-table-column>
-      <el-table-column
-        prop="date"
-        label="日期">
+      <el-table-column>
+        <template slot-scope="scope">
+    　　　　<h5>{{ scope.row.name }}</h5>
+    　　</template>
       </el-table-column>
     </el-table>
   </template>
@@ -47,6 +48,43 @@
         this.getGame()
       },
       methods: {
+        updatePlayers() {
+          var arr = {'C': [], 'PF': [], 'SF': [], 'SG': [], 'PG': []}
+            for (var i = 0; i < this.game.gamePlayers.data.length; i++) {
+              let player = this.game.gamePlayers.data[i]
+              var pos = player.position_type
+              if (pos & 1 << 0) {
+                arr['C'].push(player)
+              }
+              if (pos & 1 << 1) {
+                arr['PF'].push(player)
+              }
+              if (pos & 1 << 2) {
+                arr['SF'].push(player)
+              }
+              if (pos & 1 << 3) {
+                arr['SG'].push(player)
+              }
+              if (pos & 1 << 4) {
+                arr['PG'].push(player)
+              }
+              if (this.status === 0) {
+                player.score = this.room.PTS * player.PTS + this.room.REB * player.REB + this.room.AST * player.AST + this.room.STL * player.STL + this.room.BLK * player.BLK + this.room.TO * player.TO
+                player.score = player.score.toFixed(2)
+              } else {
+                player.score = this.room.PTS * player.DPTS + this.room.REB * player.DREB + this.room.AST * player.DAST + this.room.STL * player.DSTL + this.room.BLK * player.DBLK + this.room.TO * player.DTO
+                player.score = player.score.toFixed(2)
+              }
+              if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
+              if (parseInt(player.player_id) === this.game.play.data.PF) this.play.PF = player
+              if (parseInt(player.player_id) === this.game.play.data.SF) this.play.SF = player
+              if (parseInt(player.player_id) === this.game.play.data.SG) this.play.SG = player
+              if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player
+          }
+          console.log(this.play)
+          this.allplayers = arr
+          this.players = this.allplayers[this.selectedPos]
+        },
         async getGame() {
           try {
             // 请求话题列表接口
@@ -58,16 +96,7 @@
           } catch (err) {
 
           }
-        },
-        async getList () {
-          try {
-          let res = await Ajax.request('test')
-          console.log(res)
-        } catch (err) {
-          console.log(err)
-          alert('请求出错')
-        } 
         }
-      },
+      }
     }
   </script>

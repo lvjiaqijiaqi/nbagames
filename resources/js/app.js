@@ -34,7 +34,11 @@ import Vue from 'vue';
 import router from './routes.js'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
+
 Vue.use(ElementUI);
+Vue.use(MuseUI);
 
 new Vue({
     router

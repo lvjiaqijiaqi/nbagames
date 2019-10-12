@@ -11,6 +11,7 @@ const request = async (options) => {
     }
   }
   options.url = host + '/' + options.url
+  console.log(options)
   const instance = axios.create(options);
   let response = await instance.request()
   return response
@@ -34,7 +35,7 @@ const authRequest = async (options) => {
 const refreshToken = async (accessToken) => {
   // 请求刷新接口
   let options = {
-    url: host + '/' + 'authorizations/current',
+    url: 'authorizations/current',
     method: 'PUT',
     headers: {
       'Authorization': 'Bearer ' + accessToken
