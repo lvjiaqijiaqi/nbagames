@@ -36,10 +36,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
+import store from './store/store.js';
 
 Vue.use(ElementUI);
 Vue.use(MuseUI);
 
 new Vue({
-    router
+    router,
+    store
 }).$mount('#app') 
