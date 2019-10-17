@@ -6,7 +6,7 @@ import Game from './pages/Game.vue'
 import App from './pages/App.vue'
 import Login from './pages/login.vue'
 import Home from './pages/home.vue'
-import Index from './pages/index.vue'
+import Index from './pages/Index.vue'
 
 Vue.use(VueRouter);
 

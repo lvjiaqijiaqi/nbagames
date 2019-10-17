@@ -59,12 +59,7 @@ class AuthorizationsController extends Controller
 
 	public function store(AuthorizationRequest $request)
     {
-        $username = $request->username;
-
-        filter_var($username, FILTER_VALIDATE_EMAIL) ?
-            $credentials['email'] = $username :
-            $credentials['phone'] = $username;
-
+        $credentials['name'] = $request->username;
         $credentials['password'] = $request->password;
 
         if (!$token = \Auth::guard('api')->attempt($credentials)) {

@@ -1,5 +1,6 @@
 import axios from 'axios' 
-
+import * as types from './store/types'
+import store from './store/store'
 const host = 'http://nbagames.test/api'
 
 
@@ -11,7 +12,6 @@ const request = async (options) => {
     }
   }
   options.url = host + '/' + options.url
-  console.log(options)
   const instance = axios.create(options);
   let response = await instance.request()
   return response
@@ -25,7 +25,6 @@ const authRequest = async (options) => {
     }
   }
   let accessToken = await getToken()
-  console.log(accessToken)
   let headers = options.headers || {}
   headers.Authorization = 'Bearer ' + accessToken
   options.headers = headers
@@ -42,7 +41,6 @@ const refreshToken = async (accessToken) => {
     }
   };
   let refreshResponse = await request(options)
-  console.log(refreshResponse)
   // 刷新成功状态码为 200
   if (refreshResponse.status === 200) {
     // 将 Token 及过期时间保存在 storage 中
@@ -76,7 +74,26 @@ const getToken = async (options) => {
   return accessToken
 }
 
+// 登录
+const login = async (params) => {
+
+  // 接口请求 weapp/authorizations
+  let authResponse = await request({
+    url: 'authorizations',
+    data: params,
+    method: 'POST'
+  })
+
+  // 登录成功，记录 tosken 信息
+  if (authResponse.status === 200) {
+     store.commit(types.LOGIN, authResponse.data)
+  }
+
+  return authResponse
+}
+
 export default {
   request,
-  authRequest
+  authRequest,
+  login
 }

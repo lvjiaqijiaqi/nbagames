@@ -11,11 +11,13 @@ export default new Vuex.Store({
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
-            localStorage.token = data;
-            state.token = data;
+            localStorage.setItem('access_token', data.access_token)
+            localStorage.setItem('access_token_expired_at', new Date().getTime() + data.expires_in * 1000)
+            state.token = data.access_token
         },
         [types.LOGOUT]: (state) => {
-            localStorage.removeItem('token');
+            localStorage.removeItem('access_token')
+            localStorage.removeItem('access_token_expired_at');
             state.token = null
         }
     }
