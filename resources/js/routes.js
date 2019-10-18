@@ -13,19 +13,29 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        name: 'index',
+        name: 'app',
         meta: {
-            requireAuth: true,
+            requireAuth: false,
         },
-        component:Index 
-    },
-    {
-        path: '/home',
-        name: 'home',
-        meta: {
-            requireAuth: true,
-        },
-        component:Home 
+        component:App ,
+        children: [
+            {
+                path: '/home',
+                name: 'home',
+                meta: {
+                    requireAuth: true,
+                },
+                component:Home 
+            },
+            {
+                path: '',
+                name: 'Index',
+                meta: {
+                    requireAuth: true,
+                },
+                component:Index 
+            }
+        ]
     },
     {
         path: '/login',
