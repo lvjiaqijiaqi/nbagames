@@ -94,11 +94,11 @@
               player.score = this.room.PTS * player.DPTS + this.room.REB * player.DREB + this.room.AST * player.DAST + this.room.STL * player.DSTL + this.room.BLK * player.DBLK + this.room.TO * player.DTO
               player.score = parseFloat(player.score.toFixed(2))
             }
-            /*if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
+            if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
             if (parseInt(player.player_id) === this.game.play.data.PF) this.play.PF = player
             if (parseInt(player.player_id) === this.game.play.data.SF) this.play.SF = player
             if (parseInt(player.player_id) === this.game.play.data.SG) this.play.SG = player
-            if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player*/
+            if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player
           }
           arr['PG'].sort(function(x, y){return y.score - x.score})
           arr['SG'].sort(function(x, y){return y.score - x.score})
@@ -108,7 +108,21 @@
           this.players = arr
         },
         selectPlayer(data){
-          this.play[this.selectPos] = data
+          if (data.player_id !== this.play['C'].player_id &&
+              data.player_id !== this.play['PF'].player_id &&
+              data.player_id !== this.play['SF'].player_id &&
+              data.player_id !== this.play['PG'].player_id &&
+              data.player_id !== this.play['SG'].player_id) {
+                this.play[this.selectPos] = data
+                this.updateSelectScore()
+          }else{
+                this.$message({
+                    message: '球员已经被选',
+                    type: 'warning'
+                });
+          }
+        },
+        updateSelectScore(){
           var score = 0
           if (this.play.C.score !== undefined) score+=parseFloat(this.play.C.score)
           if (this.play.PF.score !== undefined) score+=parseFloat(this.play.PF.score)
@@ -116,7 +130,6 @@
           if (this.play.SG.score !== undefined) score+=parseFloat(this.play.SG.score)
           if (this.play.PG.score !== undefined) score+=parseFloat(this.play.PG.score)
           this.selectScore = score.toFixed(2);
-          console.log(score)
         },
         selectPosition(pos) {
           this.selectPos = pos
@@ -160,6 +173,7 @@
             this.limitScore = this.room.total.toFixed(2);
             this.status = this.game.status
             this.updatePlayers()
+            this.updateSelectScore()
           } catch (err) {
             this.loading = false;
           }

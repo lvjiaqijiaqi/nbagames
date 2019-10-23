@@ -3668,12 +3668,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           player.score = this.room.PTS * player.DPTS + this.room.REB * player.DREB + this.room.AST * player.DAST + this.room.STL * player.DSTL + this.room.BLK * player.DBLK + this.room.TO * player.DTO;
           player.score = parseFloat(player.score.toFixed(2));
         }
-        /*if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
-        if (parseInt(player.player_id) === this.game.play.data.PF) this.play.PF = player
-        if (parseInt(player.player_id) === this.game.play.data.SF) this.play.SF = player
-        if (parseInt(player.player_id) === this.game.play.data.SG) this.play.SG = player
-        if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player*/
 
+        if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player;
+        if (parseInt(player.player_id) === this.game.play.data.PF) this.play.PF = player;
+        if (parseInt(player.player_id) === this.game.play.data.SF) this.play.SF = player;
+        if (parseInt(player.player_id) === this.game.play.data.SG) this.play.SG = player;
+        if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player;
       }
 
       arr['PG'].sort(function (x, y) {
@@ -3694,7 +3694,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.players = arr;
     },
     selectPlayer: function selectPlayer(data) {
-      this.play[this.selectPos] = data;
+      if (data.player_id !== this.play['C'].player_id && data.player_id !== this.play['PF'].player_id && data.player_id !== this.play['SF'].player_id && data.player_id !== this.play['PG'].player_id && data.player_id !== this.play['SG'].player_id) {
+        this.play[this.selectPos] = data;
+        this.updateSelectScore();
+      } else {
+        this.$message({
+          message: '球员已经被选',
+          type: 'warning'
+        });
+      }
+    },
+    updateSelectScore: function updateSelectScore() {
       var score = 0;
       if (this.play.C.score !== undefined) score += parseFloat(this.play.C.score);
       if (this.play.PF.score !== undefined) score += parseFloat(this.play.PF.score);
@@ -3702,7 +3712,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (this.play.SG.score !== undefined) score += parseFloat(this.play.SG.score);
       if (this.play.PG.score !== undefined) score += parseFloat(this.play.PG.score);
       this.selectScore = score.toFixed(2);
-      console.log(score);
     },
     selectPosition: function selectPosition(pos) {
       this.selectPos = pos;
@@ -3804,20 +3813,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.limitScore = this.room.total.toFixed(2);
                 this.status = this.game.status;
                 this.updatePlayers();
-                _context2.next = 16;
+                this.updateSelectScore();
+                _context2.next = 17;
                 break;
 
-              case 13:
-                _context2.prev = 13;
+              case 14:
+                _context2.prev = 14;
                 _context2.t0 = _context2["catch"](0);
                 this.loading = false;
 
-              case 16:
+              case 17:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[0, 13]]);
+        }, _callee2, this, [[0, 14]]);
       }));
 
       function getGame() {
