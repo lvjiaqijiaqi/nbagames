@@ -44,7 +44,7 @@ class GameTransformer extends TransformerAbstract
                         $game->STL * $game->room->STL +
                         $game->BLK * $game->room->BLK +
                         $game->TO * $game->room->TO;
-        $game->room->total = $validTotal;               
+        $game->room->total = ($validTotal * 5) * $game->room->right;               
         return $this->item($game->room, new RoomTransformer());
     }
 }

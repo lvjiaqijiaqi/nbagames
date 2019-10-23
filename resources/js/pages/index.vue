@@ -1,48 +1,39 @@
 <template>
   <div>
-    <div class="index-header">
-      <el-row>
-        <el-col :span="8"><el-player-item pos="小前锋" v-bind:data="play.SF" class="el-player-item"></el-player-item></el-col>
-        <el-col :span="8"><el-player-item pos="大前锋" v-bind:data="play.PF" class="el-player-item"></el-player-item></el-col>
-        <el-col :span="8"><el-player-item pos="中锋" v-bind:data="play.C" class="el-player-item"></el-player-item></el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8"><el-player-item pos="组织后卫" v-bind:data="play.PG" class="el-player-item"></el-player-item></el-col>
-        <el-col :span="8"><el-player-item pos="得分后卫" v-bind:data="play.SG" class="el-player-item"></el-player-item></el-col>
-      </el-row>
-      <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect">
-      <el-menu-item class = 'index-meun-item' index="PG">核心后卫</el-menu-item>
-      <el-menu-item class = 'index-meun-item' index="SG">得分后卫</el-menu-item>
-      <el-menu-item class = 'index-meun-item' index="SF">小前锋</el-menu-item>
-      <el-menu-item class = 'index-meun-item' index="PF">大前锋</el-menu-item>
-      <el-menu-item class = 'index-meun-item' index="C">中锋</el-menu-item>
-      </el-menu>
+     <div class="index-header">
+        <el-row type="flex" class="" justify="space-between">
+        <el-col v-on:click.native="selectPosition('PG')" :span="4"><el-player-item  pos="组织后卫" v-bind:data="play.PG" class="el-player-item"></el-player-item></el-col>
+        <el-col v-on:click.native="selectPosition('SG')" :span="4"><el-player-item pos="得分后卫" v-bind:data="play.SG" class="el-player-item"></el-player-item></el-col>
+        <el-col v-on:click.native="selectPosition('SF')" :span="4"><el-player-item pos="小前锋" v-bind:data="play.SF" class="el-player-item"></el-player-item></el-col>
+        <el-col v-on:click.native="selectPosition('PF')" :span="4"><el-player-item pos="大前锋" v-bind:data="play.PF" class="el-player-item"></el-player-item></el-col>
+        <el-col v-on:click.native="selectPosition('C')" :span="4"><el-player-item pos="中锋" v-bind:data="play.C" class="el-player-item"></el-player-item></el-col>
+      </el-row> 
+      <el-row type="flex" class="index-condition-row" justify="space-between" align="middle">
+        <div>工资帽:{{limitScore}}</div>
+        <div>已选:{{selectScore}}</div>
+        <el-button v-if="status === 1" @click="">比赛进行中</el-button>
+        <el-button v-else-if="status === 2" @click="">比赛已经结束</el-button>
+        <el-button v-else @click="save">保存阵容</el-button>
+      </el-row> 
     </div>
-    <div>
-      <el-table
-        class="index-list"
-        :data="playerList"
-        @cell-click="selectPlayer"
-        :show-header = false
-        style="width: 100%">
-        <el-table-column  width="100">
-          <template slot="header" slot-scope="scope">
-            <el-input
-              v-model="search"
-              size="mini"
-              placeholder="输入关键字搜索"/>
-          </template>
-      　　<template slot-scope="scope">
-            <el-avatar :size="50" :src="scope.row.avatar"></el-avatar>
+    <el-table
+      :data="playerList"
+      @cell-click="selectPlayer"
+      :show-header = true
+      :height = "listHeight"
+      style="width: 100%">
+        <el-table-column width="100">
+          <template slot-scope="scope">
+            <el-avatar :size="50" fit="contain" :src="scope.row.avatar"></el-avatar>
       　　</template>
         </el-table-column>
         <el-table-column>
           <template slot-scope="scope">
-      　　　　<h5>{{ scope.row.player_name }}</h5>
+      　　　　<span>{{ scope.row.player_name }}</span></br>
+             <span>{{ scope.row.score }}</span>
       　　</template>
-        </el-table-column>
-      </el-table>
-    </div>
+        </el-table-column>: 
+    </el-table>
   </div>
 </template>
 
@@ -56,17 +47,23 @@
        },
        data() {
         return {
+          selectScore:0,
+          limitScore:0,
           game : {},
           room : {},
           status : 0,
           selectPos : 'C',
           players : {'C': [], 'PF': [], 'SF': [], 'SG': [], 'PG': []},
           play : {'C': {}, 'PF': {}, 'SF': {}, 'SG': {}, 'PG': {}},
+          loading: false
         }
       },
       computed: {
         playerList: function () {
           return this.players[this.selectPos]
+        },
+        listHeight : function () {
+          return window.innerHeight - 320
         }
       },
       methods: {
@@ -92,10 +89,10 @@
             }
             if (this.status === 0) {
               player.score = this.room.PTS * player.PTS + this.room.REB * player.REB + this.room.AST * player.AST + this.room.STL * player.STL + this.room.BLK * player.BLK + this.room.TO * player.TO
-              player.score = player.score.toFixed(2)
+              player.score = parseFloat(player.score.toFixed(2))
             } else {
               player.score = this.room.PTS * player.DPTS + this.room.REB * player.DREB + this.room.AST * player.DAST + this.room.STL * player.DSTL + this.room.BLK * player.DBLK + this.room.TO * player.DTO
-              player.score = player.score.toFixed(2)
+              player.score = parseFloat(player.score.toFixed(2))
             }
             /*if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
             if (parseInt(player.player_id) === this.game.play.data.PF) this.play.PF = player
@@ -103,51 +100,118 @@
             if (parseInt(player.player_id) === this.game.play.data.SG) this.play.SG = player
             if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player*/
           }
-          console.log(arr)
+          arr['PG'].sort(function(x, y){return y.score - x.score})
+          arr['SG'].sort(function(x, y){return y.score - x.score})
+          arr['PF'].sort(function(x, y){return y.score - x.score})
+          arr['SF'].sort(function(x, y){return y.score - x.score})
+          arr['C'].sort(function(x, y){return y.score - x.score})
           this.players = arr
         },
         selectPlayer(data){
           this.play[this.selectPos] = data
-          console.log(data)
+          var score = 0
+          if (this.play.C.score !== undefined) score+=parseFloat(this.play.C.score)
+          if (this.play.PF.score !== undefined) score+=parseFloat(this.play.PF.score)
+          if (this.play.SF.score !== undefined) score+=parseFloat(this.play.SF.score)
+          if (this.play.SG.score !== undefined) score+=parseFloat(this.play.SG.score)
+          if (this.play.PG.score !== undefined) score+=parseFloat(this.play.PG.score)
+          this.selectScore = score.toFixed(2);
+          console.log(score)
         },
-        handleSelect(key, keyPath) {
-          this.selectPos = keyPath
-          console.log(key, keyPath)
+        selectPosition(pos) {
+          this.selectPos = pos
+        },
+        save(){
+          this.saveGamePlay();
+        },
+        async saveGamePlay() {
+          let playData = {'C': this.play['C'].player_id, 'PF': this.play['PF'].player_id, 'SF': this.play['SF'].player_id, 'SG': this.play['SG'].player_id, 'PG': this.play['PG'].player_id, 'game_id': this.game.id}
+          console.log(playData)
+          if (playData['C'] !== undefined && playData['PF'] !== undefined && playData['SF'] !== undefined && playData['SG'] !== undefined && playData['PG'] !== undefined) {
+              try {
+                let postData = {
+                  url: 'games/' + this.game.id + '/play',
+                  data: playData,
+                  method: 'POST'
+                }
+                this.loading = true;
+                let topicsResponse = await Ajax.authRequest(postData)
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                });
+                console.log(topicsResponse)
+              } catch (err) {
+                this.loading = false;
+                this.$message.error('保存失败');
+              }
+            }else{
+                this.$message.error('保存失败');
+            }
         },
         async getGame() {
           try {
             // 请求话题列表接口
+            this.loading = true;
             let topicsResponse = await Ajax.authRequest('games')
+            this.loading = false;
             this.game = topicsResponse.data.data
             this.room = this.game.room.data
+            this.limitScore = this.room.total.toFixed(2);
             this.status = this.game.status
             this.updatePlayers()
           } catch (err) {
-
+            this.loading = false;
           }
         }
       },
       created () {
         this.getGame()
+      },
+      beforeMount() {
+        
       }
     }
 </script>
 
 <style type="text/css" scoped>
+  .index-list{
+    height : 400px;
+  }
   .index-header{
+    width:100%;
+    margin-left:0px;
+    margin-right:0px;
+    margin-top:50px;
+    padding-left:0px;
+    padding-right:0px;
     background-color : #FFFFFF;
-    position:fixed;
-    z-index : 9999;
-    height :200px;
-    top : 0px;
+    height :120px;
   }
   .index-list{
-    margin-top :180px
+    margin-top :120px;
+    over-flow:hidden;
   }
   .index-meun-item{
-    width: 20%;
+    height : 120px;
+    width: 18%;
+  }
+  .index-condition-row{
   }
   .el-player-item{
     height : 70px;
+    padding-left:0px;
+    padding-right:0px;
+    display : inline-block;
+  }
+  .el-menu{
+    height : 120px;
+  }
+  .index-header-player{
+    margin-left:0px;
+    margin-right:0px;
+    padding-left:0px;
+    padding-right:0px;
+    width:100%;
   }
 </style>
