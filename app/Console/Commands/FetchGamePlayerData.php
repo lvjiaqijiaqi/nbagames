@@ -46,16 +46,16 @@ class FetchGamePlayerData extends Command
      */
     public function handle()
     {
-        $date = '2019-10-25';//Carbon::now()->toDateString();
+        $date = Carbon::now()->toDateString();
         $game = Game::where(array('game_date' => $date))->first();
         if (!isset($game)) {
             $this->initGame($date);
         }else{
-            //$this->updateGame($game);
-            $avg = DB::table('game_player_data')
+            $this->updateGame($game);
+            /*$avg = DB::table('game_player_data')
                 ->where('game_id', $game->id)
                 ->avg(['PTS','REB']);
-            print_r($avg);
+            print_r($avg);*/
         } 
     }
 
@@ -150,9 +150,21 @@ class FetchGamePlayerData extends Command
 
     public function updateGame($game){
         $matches = $this->updateMatchs($game);
+        $gameStatusCount = 0;
         foreach ($matches as $match) {
-            $this->updatePlayerGameData($match , $match->game_id);
+            if ($match->match_period != 0) {
+                $this->updatePlayerGameData($match , $match->game_id);
+            }
+            $gameStatusCount += $match->match_period;
         }
+        $status = 1;
+        if ($gameStatusCount == 0) {
+            $status = 0;
+        }else if ($gameStatusCount == 2 * count($matches)) {
+            $status = 2;
+        }
+        $game->status = $status;
+        $game->save();
     }
 
     public function updatePlayerGameData($match , $gameId){
@@ -211,6 +223,7 @@ class FetchGamePlayerData extends Command
                         $rightId = $match['rightId'];
                         $rightName = $match['rightName'];
                         $rightGoal = $match['rightGoal'];
+                        $matchPeriod = $match['matchPeriod'];
                         $startTime = Carbon::parse($match['startTime']);
                         $endTime = Carbon::parse($match['endTime']);
                         if (isset($mid)) {
@@ -226,6 +239,7 @@ class FetchGamePlayerData extends Command
                             $matchArr['start_time'] = $startTime;
                             $matchArr['match_date'] = $startTime;
                             $matchArr['game_id'] = $game->id;
+                            $matchArr['match_period'] = $matchPeriod;
                             if ($endTime->gte($startTime)) {
                                $matchArr['end_time'] = $endTime;
                             }else{
