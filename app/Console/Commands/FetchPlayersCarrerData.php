@@ -87,6 +87,7 @@ class FetchPlayersCarrerData extends Command
                 $TO = $value[23];
                 $playerCareerData = array();
                 $playerCareerData['player_id'] = $playerId;
+                $playerCareerData['match_count'] = $value[3];
                 $playerCareerData['season_year'] = $seasonYear;
                 $playerCareerData['season_type'] = $seasonType;
                 $playerCareerData['PTS'] = $PTS;

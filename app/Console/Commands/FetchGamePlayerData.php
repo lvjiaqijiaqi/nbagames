@@ -46,7 +46,7 @@ class FetchGamePlayerData extends Command
      */
     public function handle()
     {
-        $date = '2018-11-19';
+        $date = '2019-10-25';//Carbon::now()->toDateString();
         $game = Game::where(array('game_date' => $date))->first();
         if (!isset($game)) {
             $this->initGame($date);
@@ -62,9 +62,16 @@ class FetchGamePlayerData extends Command
     public function initGame($date){
         $game = Game::create(array('game_date' => $date));
         $matches = $this->updateMatchs($game);
+        $startTime = null;
         foreach ($matches as $match) {
             $this->initPlayers($match->left_id , $match->game_id);
             $this->initPlayers($match->right_id , $match->game_id);
+            $gameStartTime = Carbon::parse($match->start_time);
+            if ($startTime == null) {
+                $startTime = $gameStartTime;
+            }else{
+               $startTime = $gameStartTime->min($startTime);
+            }
         }
         $maxPTS = DB::table('game_player_data')
                 ->where('game_id', $game->id)
@@ -90,6 +97,7 @@ class FetchGamePlayerData extends Command
         $game->STL = $maxSTL;
         $game->BLK = $maxBLK;
         $game->TO = $maxTO;
+        $game->start_time = $startTime;
         $game->save();
         /*$gameMax = ['PTS' => $maxPTS,
                     'REB' => $maxREB,
@@ -105,7 +113,7 @@ class FetchGamePlayerData extends Command
         $players = Player::where('team_id', '=', $teamId)->get();
         $gamePlayers = array();
         foreach ($players as $player) {
-            $playerData = PlayerCareerData::where('player_id', '=', $player->player_id)->where('season_year', '=', 18)->first();
+            $playerData = PlayerCareerData::where('player_id', '=', $player->player_id)->orderBy('season_year','desc')->where('match_count', '>', 0)->first();
             if($playerData){
                 $gamePlayer = array();
                 $gamePlayer['player_id'] = $playerData->player_id; 

@@ -41,4 +41,5 @@ Vue.use(ElementUI);
 new Vue({
     router,
     store
-}).$mount('#app') 
+}).$mount('#app')
+
