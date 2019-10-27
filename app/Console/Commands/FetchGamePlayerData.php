@@ -46,17 +46,33 @@ class FetchGamePlayerData extends Command
      */
     public function handle()
     {
+        $today = Carbon::parse('today');
+        $cleanTime = Carbon::parse('today')->addHours(16);
+        $createTime = Carbon::parse('today')->addHours(18);
         $date = Carbon::now()->toDateString();
+        if (Carbon::now()->gte($cleanTime)) { //清算当天
+            echo '清算当天游戏\n';
+            $game = Game::where(array('game_date' => $date))->first();
+            if ($game->status != 4) {
+                $game->status = 4;
+                $game->save();
+            }
+        }
+        if (Carbon::now()->gte($createTime)) {
+            $game = Game::where(array('game_date' => Carbon::tomorrow()->toDateString()))->first();
+            if (!$game) {
+               echo '创建新游戏\n';
+               $this->initGame($date);
+            }
+        }
         $game = Game::where(array('game_date' => $date))->first();
-        if (!isset($game)) {
-            $this->initGame($date);
-        }else{
-            $this->updateGame($game);
-            /*$avg = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->avg(['PTS','REB']);
-            print_r($avg);*/
-        } 
+        if ($game->status != 4) {
+            $matchStartTime = Carbon::parse($game->start_time);
+            if (Carbon::now()->gte($matchStartTime)) {
+                echo '更新游戏数据\n';
+                $this->updateGame($game);
+            }
+        }
     }
 
     public function initGame($date){

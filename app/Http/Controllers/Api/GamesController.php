@@ -14,7 +14,7 @@ class GamesController extends Controller
 {
     public function index()
     {
-    	$game = Game::first();
+    	$game = Game::where('status', '!=', '4')->first();
     	$players = GamePlayerData::where('game_id', '=', $game->id)->get();
     	$game->gamePlayers = $players;
 		  $game->room = Room::first();
