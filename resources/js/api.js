@@ -1,8 +1,8 @@
 import axios from 'axios' 
 import * as types from './store/types'
 import store from './store/store'
-const host = 'http://nbagames.test/api'
-
+//const host = 'http://nbagames.test/api'
+const host = 'http://lvjiaqi.cn/api'
 
 // 普通请求
 const request = async (options) => {
