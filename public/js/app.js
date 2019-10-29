@@ -109574,7 +109574,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-var host = 'http://nbagames.test/api'; // 普通请求
+var host = '/api'; //const host = 'http://lvjiaqi.cn/api'
+// 普通请求
 
 var request =
 /*#__PURE__*/
