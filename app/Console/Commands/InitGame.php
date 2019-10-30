@@ -46,7 +46,12 @@ class InitGame extends Command
      */
     public function handle()
     {
-        //
+        $date = Carbon::tomorrow()->toDateString();
+        $game = Game::where(array('game_date' => $date))->first();
+        if (!$game) {
+            echo '创建新游戏\n';
+            $this->initGame($date);
+        }
     }
     public function initGame($date){
         $game = Game::create(array('game_date' => $date));
