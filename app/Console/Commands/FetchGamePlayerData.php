@@ -51,9 +51,10 @@ class FetchGamePlayerData extends Command
         $game = Game::where(array('game_date' => $date))->first();
         if ($game) {
             if ($game->status !== 3) {
+                Log::channel('nba')->info('更新游戏数据1: '.$game->id);
                 $matchStartTime = Carbon::parse($game->start_time);
                 if (Carbon::now()->gte($matchStartTime)) {
-                    Log::channel('nba')->info('更新游戏数据: '.$game->id);
+                    Log::channel('nba')->info('更新游戏数据2: '.$game->id);
                     $this->updateGame($game);
                  }
             }
@@ -73,9 +74,7 @@ class FetchGamePlayerData extends Command
             $gameStatusCount += $match->match_period;
         }
         $status = 1;
-        if ($gameStatusCount == 0) {
-            $status = 0;
-        }else if ($gameStatusCount == 2 * count($matches)) {
+        if ($gameStatusCount == 2 * count($matches)) {
             $status = 2;
         }
         $game->status = $status;

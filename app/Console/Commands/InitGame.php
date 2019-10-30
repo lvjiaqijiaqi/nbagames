@@ -50,7 +50,7 @@ class InitGame extends Command
         $date = Carbon::tomorrow()->toDateString();
         $game = Game::where(array('game_date' => $date))->first();
         if (!$game) {
-            Log::info('创建游戏: '.$date);
+            Log::channel('nba')->info('创建游戏: '.$date);
             $this->initGame($date);
         }
     }

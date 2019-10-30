@@ -25,9 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            $schedule->command('nbagame:init-game')->dailyAt('15:00');
-        })->everyMinute();
+        $schedule->command('nbagame:close-game')->dailyAt('15:30');
+        $schedule->command('nbagame:init-game')->dailyAt('16:30');
+        $schedule->command('nbagame:fetch-player-game-data')->everyFiveMinutes();
+        $schedule->command('nbagame:close-game')->dailyAt('00:10');
     }
 
     /**
