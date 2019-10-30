@@ -60,25 +60,6 @@ class FetchGamePlayerData extends Command
         }else{
             Log::channel('nba')->info('游戏不存在: '.$date);
         }
-        /*$cleanTime = Carbon::parse('today')->addHours(16);
-        $createTime = Carbon::parse('today')->addHours(18);
-        $date = Carbon::now()->toDateString();
-        if (Carbon::now()->gte($cleanTime)) { //清算当天
-            echo '清算当天游戏\n';
-            $game = Game::where(array('game_date' => $date))->first();
-            if ($game->status != 4) {
-                $game->status = 4;
-                $game->save();
-            }
-        }
-        $game = Game::where(array('game_date' => $date))->first();
-        if ($game->status != 4) {
-            $matchStartTime = Carbon::parse($game->start_time);
-            if (Carbon::now()->gte($matchStartTime)) {
-                echo '更新游戏数据\n';
-                $this->updateGame($game);
-            }
-        }*/
     }
 
 

@@ -26,10 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->call(function () {
-            Log::channel('nba')->info('测试');
+            $schedule->command('nbagame:init-game')->dailyAt('15:00');
         })->everyMinute();
-        // $schedule->command('inspire')
-        //          ->hourly();
     }
 
     /**
