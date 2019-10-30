@@ -12,6 +12,7 @@ use App\Models\Player;
 use App\Models\PlayerCareerData;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class InitGame extends Command
 {
@@ -49,7 +50,7 @@ class InitGame extends Command
         $date = Carbon::tomorrow()->toDateString();
         $game = Game::where(array('game_date' => $date))->first();
         if (!$game) {
-            echo '创建新游戏\n';
+            Log::info('创建游戏: '.$date);
             $this->initGame($date);
         }
     }

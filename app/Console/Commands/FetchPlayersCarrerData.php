@@ -10,6 +10,8 @@ use App\Models\Team;
 use App\Models\Player;
 use App\Models\PlayerCareerData;
 use App\Models\Enum\PlayerPositionEnum;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class FetchPlayersCarrerData extends Command
 {
@@ -52,6 +54,7 @@ class FetchPlayersCarrerData extends Command
         foreach ($players as $player) {
             $this->fetchPlyerCareerData($player->player_id);
         }
+        Log::channel('nba')->info('更新球员数据，球员数量: '.count($players).' '.Carbon::now()->toDateTimeString());
     }
 
     public function fetchPlyerCareerData($playerId){
@@ -100,7 +103,7 @@ class FetchPlayersCarrerData extends Command
             }
         }
         }
-        echo "complete fetch playerDatas with playerId =".$playerId."\n";
+        //echo "complete fetch playerDatas with playerId =".$playerId."\n";
     }
     
     public function getSeasonType($typeString){

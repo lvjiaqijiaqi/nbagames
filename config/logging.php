@@ -46,6 +46,13 @@ return [
             'level' => 'debug',
         ],
 
+        'nba' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/nba/laravel.log'),
+            'level' => 'debug',
+            'days' => 10,
+        ],
+
         'daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

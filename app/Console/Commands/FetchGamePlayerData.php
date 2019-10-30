@@ -12,6 +12,7 @@ use App\Models\Player;
 use App\Models\PlayerCareerData;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class FetchGamePlayerData extends Command
 {
@@ -46,8 +47,20 @@ class FetchGamePlayerData extends Command
      */
     public function handle()
     {
-        $today = Carbon::parse('today');
-        $cleanTime = Carbon::parse('today')->addHours(16);
+        $date = Carbon::parse('today')->toDateString();
+        $game = Game::where(array('game_date' => $date))->first();
+        if ($game) {
+            if ($game->status !== 3) {
+                $matchStartTime = Carbon::parse($game->start_time);
+                if (Carbon::now()->gte($matchStartTime)) {
+                    Log::channel('nba')->info('更新游戏数据: '.$game->id);
+                    $this->updateGame($game);
+                 }
+            }
+        }else{
+            Log::channel('nba')->info('游戏不存在: '.$date);
+        }
+        /*$cleanTime = Carbon::parse('today')->addHours(16);
         $createTime = Carbon::parse('today')->addHours(18);
         $date = Carbon::now()->toDateString();
         if (Carbon::now()->gte($cleanTime)) { //清算当天
@@ -58,13 +71,6 @@ class FetchGamePlayerData extends Command
                 $game->save();
             }
         }
-        if (Carbon::now()->gte($createTime)) {
-            $game = Game::where(array('game_date' => Carbon::tomorrow()->toDateString()))->first();
-            if (!$game) {
-               echo '创建新游戏\n';
-               $this->initGame($date);
-            }
-        }
         $game = Game::where(array('game_date' => $date))->first();
         if ($game->status != 4) {
             $matchStartTime = Carbon::parse($game->start_time);
@@ -72,97 +78,9 @@ class FetchGamePlayerData extends Command
                 echo '更新游戏数据\n';
                 $this->updateGame($game);
             }
-        }
+        }*/
     }
 
-    public function initGame($date){
-        $game = Game::create(array('game_date' => $date));
-        $matches = $this->updateMatchs($game);
-        $startTime = null;
-        foreach ($matches as $match) {
-            $this->initPlayers($match->left_id , $match->game_id);
-            $this->initPlayers($match->right_id , $match->game_id);
-            $gameStartTime = Carbon::parse($match->start_time);
-            if ($startTime == null) {
-                $startTime = $gameStartTime;
-            }else{
-               $startTime = $gameStartTime->min($startTime);
-            }
-        }
-        $maxPTS = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->max('PTS');
-        $maxREB = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->max('REB');
-        $maxAST = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->max('AST');
-        $maxSTL = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->max('STL');
-        $maxBLK = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->max('BLK');
-        $maxTO = DB::table('game_player_data')
-                ->where('game_id', $game->id)
-                ->max('TO');  
-        $game->PTS = $maxPTS;
-        $game->AST = $maxREB;
-        $game->REB = $maxAST;
-        $game->STL = $maxSTL;
-        $game->BLK = $maxBLK;
-        $game->TO = $maxTO;
-        $game->start_time = $startTime;
-        $game->save();
-        /*$gameMax = ['PTS' => $maxPTS,
-                    'REB' => $maxREB,
-                    'AST' => $maxAST,
-                    'STL' => $maxSTL,
-                    'BLK' => $maxBLK,
-                    'TO' => $maxTO,
-                    ];
-        print_r($gameMax);*/
-    }
-
-    public function initPlayers($teamId , $gameId){
-        $players = Player::where('team_id', '=', $teamId)->get();
-        $gamePlayers = array();
-        foreach ($players as $player) {
-            $playerData = PlayerCareerData::where('player_id', '=', $player->player_id)->orderBy('season_year','desc')->where('match_count', '>', 0)->first();
-            if($playerData){
-                $gamePlayer = array();
-                $gamePlayer['player_id'] = $playerData->player_id; 
-                $gamePlayer['PTS'] = $playerData->PTS;
-                $gamePlayer['REB'] = $playerData->REB;
-                $gamePlayer['AST'] = $playerData->AST;
-                $gamePlayer['STL'] = $playerData->STL;
-                $gamePlayer['BLK'] = $playerData->BLK;
-                $gamePlayer['TO'] = $playerData->TO;
-                $gamePlayer['TO'] = $playerData->TO;
-                $gamePlayer['player_cn_name'] = $player->cn_name;
-                $gamePlayer['game_id'] = $gameId;
-                $gamePlayer['position_type'] = $player->position_type;
-                $gamePlayer['avatar'] = $player->icon;
-                $gamePlayers[] = $gamePlayer;
-            }else{
-                $gamePlayer = array();
-                $gamePlayer['player_id'] = $player->player_id; 
-                $gamePlayer['PTS'] = 0;
-                $gamePlayer['REB'] = 0;
-                $gamePlayer['AST'] = 0;
-                $gamePlayer['STL'] = 0;
-                $gamePlayer['BLK'] = 0;
-                $gamePlayer['TO'] = 0;
-                $gamePlayer['avatar'] = '';
-                $gamePlayer['player_cn_name'] = $player->cn_name;
-                $gamePlayer['game_id'] = $gameId;
-                $gamePlayer['position_type'] = $player->position_type;
-                $gamePlayers[] = $gamePlayer;
-            }
-        }
-        $rs = DB::table('game_player_data')->insert($gamePlayers);
-    }
 
     public function updateGame($game){
         $matches = $this->updateMatchs($game);
