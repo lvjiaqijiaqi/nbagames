@@ -94,18 +94,20 @@
               player.score = this.room.PTS * player.DPTS + this.room.REB * player.DREB + this.room.AST * player.DAST + this.room.STL * player.DSTL + this.room.BLK * player.DBLK + this.room.TO * player.DTO
               player.score = parseFloat(player.score.toFixed(2))
             }
-            /*if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
-            if (parseInt(player.player_id) === this.game.play.data.PF) this.play.PF = player
-            if (parseInt(player.player_id) === this.game.play.data.SF) this.play.SF = player
-            if (parseInt(player.player_id) === this.game.play.data.SG) this.play.SG = player
-            if (parseInt(player.player_id) === this.game.play.data.PG) this.play.PG = player*/
+            if (!this.game.play && typeof(this.game.play)!='undefined' && this.game.play!=0) 
+            { 
+                if (parseInt(player.player_id) === parseInt(this.game.play.data.PF)) this.play.PF = player
+                if (parseInt(player.player_id) === parseInt(this.game.play.data.SF)) this.play.SF = player
+                if (parseInt(player.player_id) === parseInt(this.game.play.data.SG)) this.play.SG = player
+                if (parseInt(player.player_id) === parseInt(this.game.play.data.PG)) this.play.PG = player
+            }
           }
           arr['PG'].sort(function(x, y){return y.score - x.score})
           arr['SG'].sort(function(x, y){return y.score - x.score})
           arr['PF'].sort(function(x, y){return y.score - x.score})
           arr['SF'].sort(function(x, y){return y.score - x.score})
           arr['C'].sort(function(x, y){return y.score - x.score})
-          console.log(arr)
+          
           this.players = arr
         },
         selectPlayer(data){
