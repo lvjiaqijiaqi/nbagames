@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './store/store'
 import * as types from './store/types'
-import Game from './pages/Game.vue'
 import App from './pages/App.vue'
 import Login from './pages/login.vue'
 import Home from './pages/home.vue'
@@ -51,6 +50,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(r => r.meta.requireAuth)) {
+        console.log(store.state.token);
         if (store.state.token) {
             next();
         }

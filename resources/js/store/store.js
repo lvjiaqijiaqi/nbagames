@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         user: {},
-        token: null
+        token: localStorage.getItem("access_token")
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
