@@ -11,9 +11,9 @@
       <el-row type="flex" class="index-condition-row" justify="space-between" align="middle">
         <div>工资帽:{{limitScore}}</div>
         <div>已选:{{selectScore}}</div>
-        <el-button v-if="status === 1" @click="">比赛进行中</el-button>
-        <el-button v-else-if="status === 2" @click="">比赛已经结束</el-button>
-        <el-button v-else @click="save">保存阵容</el-button>
+        <el-button v-if="status === 0" @click="save">保存阵容</el-button>
+        <el-button v-else-if="status === 1" @click="">比赛进行中</el-button>
+        <el-button v-else @click="">比赛已经结束</el-button>
       </el-row> 
     </div>
     <el-table
