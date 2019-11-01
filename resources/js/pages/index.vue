@@ -10,7 +10,8 @@
       </el-row> 
       <el-row type="flex" class="index-condition-row" justify="space-between" align="middle">
         <div>工资帽:{{limitScore}}</div>
-        <div>已选:{{selectScore}}</div>
+        <div v-if="status === 0">已选:{{selectScore}}</div>
+        <div v-else>评分:{{selectScore}}</div>
         <el-button v-if="status === 0" @click="save">保存阵容</el-button>
         <el-button v-else-if="status === 1" @click="">比赛进行中</el-button>
         <el-button v-else @click="">比赛已经结束</el-button>
@@ -94,8 +95,10 @@
               player.score = this.room.PTS * player.DPTS + this.room.REB * player.DREB + this.room.AST * player.DAST + this.room.STL * player.DSTL + this.room.BLK * player.DBLK + this.room.TO * player.DTO
               player.score = parseFloat(player.score.toFixed(2))
             }
-            if (!this.game.play && typeof(this.game.play)!='undefined' && this.game.play!=0) 
+            //console.log(this.game.play);
+            if (typeof(this.game.play)!='undefined') 
             { 
+                console.log(11111);
                 if (parseInt(player.player_id) === parseInt(this.game.play.data.PF)) this.play.PF = player
                 if (parseInt(player.player_id) === parseInt(this.game.play.data.SF)) this.play.SF = player
                 if (parseInt(player.player_id) === parseInt(this.game.play.data.SG)) this.play.SG = player
