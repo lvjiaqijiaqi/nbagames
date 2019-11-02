@@ -8,13 +8,18 @@
         <el-col v-on:click.native="selectPosition('PF')" :span="4"><el-player-item pos="大前锋" v-bind:data="play.PF" class="el-player-item"></el-player-item></el-col>
         <el-col v-on:click.native="selectPosition('C')" :span="4"><el-player-item pos="中锋" v-bind:data="play.C" class="el-player-item"></el-player-item></el-col>
       </el-row> 
-      <el-row type="flex" class="index-condition-row" justify="space-between" align="middle">
-        <div>工资帽:{{limitScore}}</div>
-        <div v-if="status === 0">已选:{{selectScore}}</div>
-        <div v-else>评分:{{selectScore}}</div>
-        <el-button v-if="status === 0" @click="save">保存阵容</el-button>
-        <el-button v-else-if="status === 1" @click="">比赛进行中</el-button>
-        <el-button v-else @click="">比赛已经结束</el-button>
+      <el-row type="flex" class="index-player-msg-row" justify="space-between" align="middle">
+        <el-col :span="4">
+           <el-avatar :size="60" shape="square"  fit="contain" :src="selectedPlayer.avatar"></el-avatar>
+        </el-col>
+        <el-col :span="20">
+           <div>
+             位置:{{selectPos}}  姓名:{{selectedPlayer.player_name}}
+           </div>
+           <div>
+             PTS:{{selectedPlayer.PTS}} REB:{{selectedPlayer.REB}} AST:{{selectedPlayer.AST}} STL:{{selectedPlayer.STL}} BLK:{{selectedPlayer.BLK}} TO:{{selectedPlayer.TO}} SCORE:{{selectedPlayer.score}}
+           </div>
+        </el-col>
       </el-row> 
     </div>
     <el-table
@@ -24,11 +29,23 @@
       :height = "listHeight"
       style="width: 100%">
         <el-table-column width="100">
+          <template slot="header" slot-scope="scope">
+              <el-button v-if="status === 0" @click="save">保存阵容</el-button>
+              <el-button v-else-if="status === 1" @click="">比赛进行中</el-button>
+              <el-button v-else @click="">结束</el-button>  
+          </template>
           <template slot-scope="scope">
             <el-avatar :size="50" fit="contain" :src="scope.row.avatar"></el-avatar>
       　　</template>
         </el-table-column>
         <el-table-column>
+          <template slot="header" slot-scope="scope">
+            <div class="index-condition-row">
+              <div>工资帽:{{limitScore}}</div>
+              <div v-if="status === 0">已选:{{selectScore}}</div>
+              <div v-else>评分:{{selectScore}}</div>
+            </div>
+          </template>
           <template slot-scope="scope">
       　　　　<span>{{ scope.row.player_name }}</span></br>
              <span>{{ scope.row.score }}</span>
@@ -64,7 +81,10 @@
           return this.players[this.selectPos]
         },
         listHeight : function () {
-          return window.innerHeight - 320
+          return window.innerHeight - 350
+        },
+        selectedPlayer : function(){
+          return this.play[this.selectPos];
         }
       },
       methods: {
@@ -194,10 +214,7 @@
     }
 </script>
 
-<style type="text/css" scoped>
-  .index-list{
-    height : 400px;
-  }
+<style type="text/css">
   .index-header{
     width:100%;
     margin-left:0px;
@@ -206,17 +223,20 @@
     padding-left:0px;
     padding-right:0px;
     background-color : #FFFFFF;
-    height :120px;
-  }
-  .index-list{
-    margin-top :120px;
-    over-flow:hidden;
+    height :160px;
   }
   .index-meun-item{
     height : 120px;
     width: 18%;
   }
+  .index-player-msg-row{
+    margin-top : 15px;
+  },
   .index-condition-row{
+  }
+  .index-condition-row > div{
+    vertical-align: middle;
+    height : 100%
   }
   .el-player-item{
     height : 70px;
