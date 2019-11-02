@@ -118,7 +118,7 @@
             //console.log(this.game.play);
             if (typeof(this.game.play)!='undefined') 
             { 
-                console.log(11111);
+                if (parseInt(player.player_id) === parseInt(this.game.play.data.C)) this.play.C = player
                 if (parseInt(player.player_id) === parseInt(this.game.play.data.PF)) this.play.PF = player
                 if (parseInt(player.player_id) === parseInt(this.game.play.data.SF)) this.play.SF = player
                 if (parseInt(player.player_id) === parseInt(this.game.play.data.SG)) this.play.SG = player
