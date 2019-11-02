@@ -35,7 +35,6 @@ class GameTransformer extends TransformerAbstract
         if ($game->play) {
             return $this->item($game->play, new PlayTransformer());
         }
-        return array();
     }
 
     public function includeRoom(Game $game){
