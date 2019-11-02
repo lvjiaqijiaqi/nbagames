@@ -3,7 +3,7 @@
     <div class="play-item">
     <el-avatar shape="square" :size="50" fit='contain' :src='data.avatar'></el-avatar>
     </div>
-    <div class="play-item-div">{{data.score ? data.score : 'score'}}</div>
+    <div class="play-item-div">{{data.score ? data.score : '0'}}</div>
     </div>
   </div>
 </template>
