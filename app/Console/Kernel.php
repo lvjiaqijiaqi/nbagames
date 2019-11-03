@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('nbagame:close-game')->dailyAt('15:30');
         $schedule->command('nbagame:init-game')->dailyAt('16:30');
         $schedule->command('nbagame:fetch-player-game-data')->everyFiveMinutes();
-        $schedule->command('nbagame:close-game')->dailyAt('00:10');
+        $schedule->command('nbagame:start-game')->dailyAt('00:10');
     }
 
     /**
