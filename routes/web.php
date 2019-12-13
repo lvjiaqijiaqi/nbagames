@@ -13,5 +13,5 @@
 
 Route::get('/', 'App\AppController@getApp');
 Route::get('/test', function(){
-   echo 'test';
+   return view('pig');
 });

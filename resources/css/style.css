@@ -1,0 +1,18 @@
+
+/*basic reset*/
+* {margin: 0; padding: 0;}
+body {text-align: center; overflow: hidden;}
+
+.grid {
+	width: 300px; height: 600px; margin: 30px auto 30px auto;
+	perspective: 500px; /*For 3d*/
+}
+.grid img {width: 75px; height: 75px; display: block; float: left;}
+
+.animate {
+	font: 12px Montserrat; text-transform: uppercase;
+	background: rgb(0, 100, 0); color: white;
+	padding: 10px 20px; border-radius: 5px;
+	cursor: pointer;
+}
+.animate:hover {background: rgb(0, 75, 0);}
