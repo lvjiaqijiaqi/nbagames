@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" /> 
-<title>3D效果魔方-jq22.com</title>
+<title>你是一只猪啊啊啊啊</title>
 <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <style>
 .zuida {
@@ -23,7 +23,7 @@
   transform-style:preserve-3d;
   transform-origin:center center;
   transform:rotateY(0deg) rotateX(0deg);
-  transition:transform 4s linear;
+  transition:transform 8s linear;
 }
 
 @keyframes rotatete{
