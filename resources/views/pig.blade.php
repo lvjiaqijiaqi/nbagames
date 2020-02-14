@@ -23,7 +23,7 @@
   transform-style:preserve-3d;
   transform-origin:center center;
   transform:rotateY(0deg) rotateX(0deg);
-  transition:transform 8s linear;
+  transition:transform 4s linear;
 }
 
 @keyframes rotatete{
@@ -35,7 +35,10 @@ to{
   }
 }
 .aa:hover {
-  animation: rotatete 4s linear infinite
+  animation: rotatete 6s linear infinite
+}
+.aa:active{
+  animation: rotatete 6s linear infinite
 }
 
 .a1,.a2,.a3,.a4,.a5,.a6 {
@@ -187,6 +190,8 @@ to{
 <script>
 
 </script>
-
+<script type="text/javascript">
+  document.body.addEventListener('touchstart', function (){});
+</script>
 </body>
 </html>
