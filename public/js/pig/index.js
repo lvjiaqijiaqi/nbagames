@@ -1,8 +1,9 @@
 //Creating 50 thumbnails inside .grid
 //the images are stored on the server serially. So we can use a loop to generate the HTML.
 var images = "", count = 32;
-for(var i = 1; i <= count; i++)
-	images += '<img src="http://thecodeplayer.com/u/uifaces/'+i+'.jpg" />';
+for(var i = 1; i <= count; i++){
+	images += '<img src="images/img1.jpeg" />';
+}
 	
 //appending the images to .grid
 $(".grid").append(images);

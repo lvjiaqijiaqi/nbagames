@@ -9,7 +9,6 @@
 <body>
   <!-- original by http://thecodeplayer.com -->
 <div class="grid"></div>
-<span class="animate">开始动画</span>
 <script src="{{ asset('js/pig/jquery.js') }}"></script>
 <script src="{{ asset('js/pig/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('js/pig/index.js') }}"></script>
