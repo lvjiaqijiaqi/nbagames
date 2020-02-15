@@ -7,8 +7,8 @@
 <style>
 
 .container {
-  background:url(images/bg2.jpeg);
   background-size:cover;
+  background-color: black;
 }
 .text_container {
   width:100%;
