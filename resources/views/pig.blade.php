@@ -6,6 +6,11 @@
 <title>你是一只猪啊啊啊啊</title>
 <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <style>
+
+.container {
+  background:url(images/bg1.jpeg);
+  background-size:cover;
+}
 .zuida {
   width:100%;
   height:100%;
@@ -168,7 +173,7 @@ to{
 }
 </style>
 </head>
-<body>
+<body class="container">
 <div class="zuida">
     <div class="aa">
         <div class="bb"></div>
