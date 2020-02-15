@@ -39,7 +39,7 @@
   }
 }
 
-.text_container:active{
+.text_container{
   animation: text_container_rotate 4s linear infinite
 }
 
@@ -239,8 +239,7 @@ to{
     conter++;
   }
   document.body.addEventListener('touchstart', function (){
-    setInterval(function(){startTextPlay()},4000);
-     //startTextPlay();
+      setInterval(function(){startTextPlay()},4000);
   });
   window.onload = function(){
       setInterval(function(){startTextPlay()},4000);
