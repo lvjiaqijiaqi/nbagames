@@ -230,7 +230,7 @@ to{
 
 </script>
 <script type="text/javascript">
-  var textarr = ["你是一头猪","你是一头大笨猪","你是我的一头大笨猪","你永远是我的大笨猪","想和你睡觉","想和你吃饭","想和XXXX"];
+  var textarr = ["你是一头猪","你是一头大笨猪","你是我的一头大笨猪","你永远是我的大笨猪","想和你睡觉","想和你吃饭","想和XXXX","好像好像","每天都想啊","想把你捏死","想把你吃掉","你是我的","我要你永远是我的"];
   var conter = 0;
   function startTextPlay(){
     console.log(conter);
@@ -241,9 +241,6 @@ to{
   document.body.addEventListener('touchstart', function (){
       setInterval(function(){startTextPlay()},4000);
   });
-  window.onload = function(){
-      setInterval(function(){startTextPlay()},4000);
-  };
 </script>
 </body>
 </html>
