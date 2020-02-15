@@ -4,13 +4,45 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" /> 
 <title>你是一只猪啊啊啊啊</title>
-<script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
 <style>
 
 .container {
-  background:url(images/bg1.jpeg);
+  background:url(images/bg2.jpeg);
   background-size:cover;
 }
+.text_container {
+  width:100%;
+  height:20;
+  font-size: 30px;
+  color: white;
+  position:absolute;
+  bottom: 20%;
+  text-align:center;
+  z-index: 1000;
+}
+
+@keyframes text_container_rotate{
+0%{
+    transform:rotate(0deg);
+  }
+25%{
+    transform:rotate(30deg);
+  }
+50%{
+    transform:rotate(0deg);
+  }
+75%{
+    transform:rotate(-30deg);
+}
+100%{
+    transform:rotate(0deg);
+  }
+}
+
+.text_container{
+  animation: text_container_rotate 4s linear infinite
+}
+
 .zuida {
   width:100%;
   height:100%;
@@ -51,7 +83,7 @@ to{
   height:100px;
   position:absolute;
   color:#fff;
-  opacity:0.5;
+  opacity:0.7;
 }
 .a1 {
   background:#f00;
@@ -97,7 +129,7 @@ to{
   width:200px;
   height:200px;
   position:absolute;
-  opacity:0.8;
+  opacity:0.9;
 }
 .b1 {
   left:-150px;
@@ -191,12 +223,28 @@ to{
         <div class="b6"></div>
     </div>
 </div>
-
+<div id="text_container" class="text_container">
+  啊啊啊啊啊啊啊啊
+</div>
 <script>
 
 </script>
 <script type="text/javascript">
-  document.body.addEventListener('touchstart', function (){});
+  var textarr = ["你是一头猪","你是一头大笨猪","你是我的一头大笨猪","你永远是我的大笨猪","想和你睡觉","想和你吃饭","想和XXXX"];
+  var conter = 0;
+  function startTextPlay(){
+    console.log(conter);
+    var x =document.getElementById("text_container");
+    x.innerHTML = textarr[conter%textarr.length];
+    conter++;
+  }
+  document.body.addEventListener('touchstart', function (){
+    setInterval(function(){startTextPlay()},4000);
+     //startTextPlay();
+  });
+  window.onload = function(){
+      setInterval(function(){startTextPlay()},4000);
+  };
 </script>
 </body>
 </html>
