@@ -39,7 +39,7 @@
   }
 }
 
-.text_container{
+.text_container:active{
   animation: text_container_rotate 4s linear infinite
 }
 
