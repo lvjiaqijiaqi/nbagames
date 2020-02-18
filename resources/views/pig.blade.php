@@ -223,9 +223,6 @@ to{
         <div class="b6"></div>
     </div>
 </div>
-<div id="text_container" class="text_container">
-  啊啊啊啊啊啊啊啊
-</div>
 <script>
 
 </script>
@@ -233,10 +230,6 @@ to{
   var textarr = ["你是一头猪","你是一头大笨猪","你是我的一头大笨猪","你永远是我的大笨猪","想和你睡觉","想和你吃饭","想和XXXX","好像好像","每天都想啊","想把你捏死","想把你吃掉","你是我的","我要你永远是我的"];
   var conter = 0;
   function startTextPlay(){
-    console.log(conter);
-    var x =document.getElementById("text_container");
-    x.innerHTML = textarr[conter%textarr.length];
-    conter++;
   }
   document.body.addEventListener('touchstart', function (){
       setInterval(function(){startTextPlay()},4000);
